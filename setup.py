@@ -22,5 +22,5 @@ setup(name='python-markdown-math',
       author_email='mitya57@gmail.com',
       version='0.1',
       url='https://github.com/mitya57/python-markdown-math',
-      py_modules=['mdx_math'],
+      py_modules=['mdx_katex'],
       license='BSD')
