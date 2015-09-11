@@ -20,18 +20,23 @@ class MathExtension(markdown.extensions.Extension):
 
     def extendMarkdown(self, md, md_globals):
         def handle_match_inline(m):
-            node = markdown.util.etree.Element('script')
-            node.set('type', 'math/tex')
-            node.text = markdown.util.AtomicString(m.group(3))
+            node = markdown.util.etree.Element('div')
+            node.set('class', 'equation')
+            node.set('data-expr', markdown.util.AtomicString(m.group(3)))
+            node.set('displayMode', 'False')
+            node.text = ''
             return node
 
         def handle_match(m):
-            node = markdown.util.etree.Element('script')
+            node = markdown.util.etree.Element('div')
+            node.set('class', 'equation')
+            node.set('displayMode', 'True')
             node.set('type', 'math/tex; mode=display')
             if '\\begin' in m.group(2):
-                node.text = markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5))
+                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
             else:
-                node.text = markdown.util.AtomicString(m.group(3))
+                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
+            node.text = ''
             return node
 
         configs = self.getConfigs()
