@@ -20,7 +20,7 @@ class MathExtension(markdown.extensions.Extension):
 
     def extendMarkdown(self, md, md_globals):
         def handle_match_inline(m):
-            node = markdown.util.etree.Element('div')
+            node = markdown.util.etree.Element('span')
             node.set('class', 'equation')
             node.set('data-expr', markdown.util.AtomicString(m.group(3)))
             node.set('displayMode', 'False')
