@@ -10,6 +10,7 @@ Author: 2015, Dmitry Shachnev <mitya57@gmail.com>.
 '''
 
 import markdown
+import random
 
 class MathExtension(markdown.extensions.Extension):
     def __init__(self, *args, **kwargs):
@@ -23,8 +24,10 @@ class MathExtension(markdown.extensions.Extension):
             node = markdown.util.etree.Element('span')
             node.set('class', 'equation')
             script_node = markdown.util.etree.SubElement(node, 'script')
+            script_id = ''.join([random.choice('0123456789') for i in range(10)])
+            script_node.set('id', script_id)
             script_node.text = markdown.util.AtomicString(
-                'katex.render("{}", document.currentScript.parentNode);'.format(markdown.util.AtomicString(m.group(3))))
+                'katex.render("{}", document.getElementById("{}").parentNode);'.format(markdown.util.AtomicString(m.group(3)), script_id))
             return node
 
         def handle_match(m):
