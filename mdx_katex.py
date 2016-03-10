@@ -22,21 +22,26 @@ class MathExtension(markdown.extensions.Extension):
         def handle_match_inline(m):
             node = markdown.util.etree.Element('span')
             node.set('class', 'equation')
-            node.set('data-expr', markdown.util.AtomicString(m.group(3)))
-            node.set('displayMode', 'False')
-            node.text = ''
+            script_node = markdown.util.etree.SubElement(node, 'script')
+            script_node.text = markdown.util.AtomicString(
+                'katex.render("{}", document.currentScript.parentNode);'.format(markdown.util.AtomicString(m.group(3))))
             return node
 
         def handle_match(m):
             node = markdown.util.etree.Element('div')
+#            node.set('class', 'equation')
+#            node.set('displayMode', 'True')
+#            node.set('type', 'math/tex; mode=display')
             node.set('class', 'equation')
-            node.set('displayMode', 'True')
-            node.set('type', 'math/tex; mode=display')
+            script_node = markdown.util.etree.SubElement(node, 'script')
             if '\\begin' in m.group(2):
-                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
+#                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
+                script_node.text = markdown.util.AtomicString(
+                    'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5))))
             else:
-                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
-            node.text = ''
+#                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
+                script_node.text = markdown.util.AtomicString(
+                    'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(markdown.util.AtomicString(m.group(3))))
             return node
 
         configs = self.getConfigs()
