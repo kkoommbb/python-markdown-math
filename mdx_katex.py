@@ -29,7 +29,7 @@ class MathExtension(markdown.extensions.Extension):
             script_node = markdown.util.etree.SubElement(node, 'script')
             script_node.text = markdown.util.AtomicString(
                 'katex.render("{0}", document.getElementById("{1}"));'.format(
-                    markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id))
+                    markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), equation_id))
             return node
 
         def handle_match(m):
@@ -43,13 +43,13 @@ class MathExtension(markdown.extensions.Extension):
 #                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
                 script_node.text = markdown.util.AtomicString(
                     'katex.render("{}", document.getElementById("{}"), {{ displayMode: true }});'.format(
-                        markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)).replace("\\", "\\\\"), script_id)
+                        markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)).replace("\\", "\\\\"), equation_id)
                     )
             else:
 #                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
                 script_node.text = markdown.util.AtomicString(
                     'katex.render("{}", document.getElementById("{}"), {{ displayMode: true }});'.format(
-                        markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id)
+                        markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), equation_id)
                     )
             return node
 
