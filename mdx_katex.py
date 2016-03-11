@@ -23,33 +23,32 @@ class MathExtension(markdown.extensions.Extension):
         def handle_match_inline(m):
             node = markdown.util.etree.Element('span')
             node.set('class', 'equation')
+            equation_node = markdown.util.etree.SubElement(node, 'span')
+            equation_id = ''.join([random.choice('0123456789') for i in range(10)])
+            equation_node.set('id', equation_id)
             script_node = markdown.util.etree.SubElement(node, 'script')
-            script_id = ''.join([random.choice('0123456789') for i in range(10)])
-            script_node.set('id', script_id)
             script_node.text = markdown.util.AtomicString(
-                'katex.render("{0}", document.getElementById("{1}").parentNode);'.format(
+                'katex.render("{0}", document.getElementById("{1}"));'.format(
                     markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id))
             return node
 
         def handle_match(m):
             node = markdown.util.etree.Element('div')
-#            node.set('class', 'equation')
-#            node.set('displayMode', 'True')
-#            node.set('type', 'math/tex; mode=display')
             node.set('class', 'equation')
+            equation_node = markdown.util.etree.SubElement(node, 'span')
+            equation_id = ''.join([random.choice('0123456789') for i in range(10)])
+            equation_node.set('id', equation_id)
             script_node = markdown.util.etree.SubElement(node, 'script')
-            script_id = ''.join([random.choice('0123456789') for i in range(10)])
-            script_node.set('id', script_id)
             if '\\begin' in m.group(2):
 #                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.getElementById("{}").parentNode, {{ displayMode: true }});'.format(
+                    'katex.render("{}", document.getElementById("{}"), {{ displayMode: true }});'.format(
                         markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)).replace("\\", "\\\\"), script_id)
                     )
             else:
 #                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.getElementById("{}").parentNode, {{ displayMode: true }});'.format(
+                    'katex.render("{}", document.getElementById("{}"), {{ displayMode: true }});'.format(
                         markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id)
                     )
             return node
