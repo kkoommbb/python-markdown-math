@@ -43,13 +43,13 @@ class MathExtension(markdown.extensions.Extension):
             if '\\begin' in m.group(2):
 #                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.getElementById("{}").parentNode, \{ displayMode: true \});'.format(
+                    'katex.render("{}", document.getElementById("{}").parentNode, {{ displayMode: true }});'.format(
                         markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)).replace("\\", "\\\\"), script_id)
                     )
             else:
 #                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(
+                    'katex.render("{}", document.currentScript.parentNode, {{ displayMode: true }});'.format(
                         markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id)
                     )
             return node
