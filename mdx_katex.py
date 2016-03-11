@@ -49,7 +49,7 @@ class MathExtension(markdown.extensions.Extension):
             else:
 #                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.currentScript.parentNode, {{ displayMode: true }});'.format(
+                    'katex.render("{}", document.getElementById("{}").parentNode, {{ displayMode: true }});'.format(
                         markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id)
                     )
             return node
