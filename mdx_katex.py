@@ -27,8 +27,8 @@ class MathExtension(markdown.extensions.Extension):
             script_id = ''.join([random.choice('0123456789') for i in range(10)])
             script_node.set('id', script_id)
             script_node.text = markdown.util.AtomicString(
-                'console.log("{0}");katex.render("{0}", document.getElementById("{1}").parentNode);'.format(
-                    markdown.util.AtomicString(m.group(3)), script_id))
+                'katex.render("{0}", document.getElementById("{1}").parentNode);'.format(
+                    markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id))
             return node
 
         def handle_match(m):
@@ -44,13 +44,13 @@ class MathExtension(markdown.extensions.Extension):
 #                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
                 script_node.text = markdown.util.AtomicString(
                     'katex.render("{}", document.getElementById("{}").parentNode, \{ displayMode: true \});'.format(
-                        markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)), script_id)
+                        markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)).replace("\\", "\\\\"), script_id)
                     )
             else:
 #                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
                 script_node.text = markdown.util.AtomicString(
                     'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(
-                        markdown.util.AtomicString(m.group(3)), script_id)
+                        markdown.util.AtomicString(m.group(3)).replace("\\", "\\\\"), script_id)
                     )
             return node
 
