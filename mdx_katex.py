@@ -27,7 +27,7 @@ class MathExtension(markdown.extensions.Extension):
             script_id = ''.join([random.choice('0123456789') for i in range(10)])
             script_node.set('id', script_id)
             script_node.text = markdown.util.AtomicString(
-                'katex.render("{}", document.getElementById("{}").parentNode);'.format(
+                'console.log("{0}");katex.render("{0}", document.getElementById("{1}").parentNode);'.format(
                     markdown.util.AtomicString(m.group(3)), script_id))
             return node
 
