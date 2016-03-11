@@ -27,7 +27,8 @@ class MathExtension(markdown.extensions.Extension):
             script_id = ''.join([random.choice('0123456789') for i in range(10)])
             script_node.set('id', script_id)
             script_node.text = markdown.util.AtomicString(
-                'katex.render("{}", document.getElementById("{}").parentNode);'.format(markdown.util.AtomicString(m.group(3)), script_id))
+                'katex.render("{}", document.getElementById("{}").parentNode);'.format(
+                    markdown.util.AtomicString(m.group(3)), script_id))
             return node
 
         def handle_match(m):
@@ -37,14 +38,20 @@ class MathExtension(markdown.extensions.Extension):
 #            node.set('type', 'math/tex; mode=display')
             node.set('class', 'equation')
             script_node = markdown.util.etree.SubElement(node, 'script')
+            script_id = ''.join([random.choice('0123456789') for i in range(10)])
+            script_node.set('id', script_id)
             if '\\begin' in m.group(2):
 #                node.set('data-expr', markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5))))
+                    'katex.render("{}", document.getElementById("{}").parentNode, \{ displayMode: true \});'.format(
+                        markdown.util.AtomicString(m.group(2) + m.group(4) + m.group(5)), script_id)
+                    )
             else:
 #                node.set('data-expr', markdown.util.AtomicString(m.group(3)))
                 script_node.text = markdown.util.AtomicString(
-                    'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(markdown.util.AtomicString(m.group(3))))
+                    'katex.render("{}", document.currentScript.parentNode, \{ displayMode: true \});'.format(
+                        markdown.util.AtomicString(m.group(3)), script_id)
+                    )
             return node
 
         configs = self.getConfigs()
